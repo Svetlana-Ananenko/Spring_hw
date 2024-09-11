@@ -1,7 +1,10 @@
 package com.spring.hw.Controller;
 
 import com.spring.hw.Service.Basket;
+import com.spring.hw.Service.BasketServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,11 +14,18 @@ import java.util.List;
 @RequestMapping("/store/order")
 public class ProductsController {
 
+    private BasketServiceImpl basketServiceImpl;
+
+
+    public ProductsController(BasketServiceImpl basketServiceImpl) {
+        this.basketServiceImpl = basketServiceImpl;
+    }
+
     @GetMapping("/add")
-        public void addProducts(@RequestParam(value = "productsList") String productsList, HttpSession session) {
-        Basket basket = (Basket) session.getAttribute("basket");
+        public ResponseEntity<String> addProducts(@RequestParam String productsList, HttpSession session) {
+        BasketServiceImpl basket = (BasketServiceImpl) session.getAttribute("basket");
             if (basket == null) {
-                basket = new Basket(); // Создайте новый объект Basket (корзину)
+                basket = new BasketServiceImpl(); // Создайте новый объект Basket (корзину)
                 session.setAttribute("basket", basket); //добавляем корзину в сессию
             }
 
@@ -24,13 +34,17 @@ public class ProductsController {
             basket.addProducts(products);  //  Здесь  продукты  будут  добавляться  с  учетом  UTF-8
             }
         }
-
+        return ResponseEntity.status(HttpStatus.OK).body("Товар в корзину - добавлен");
     }
 
 
     @GetMapping("/get")
-    public List<String> getProducts(HttpSession session) {
-        Basket basket = (Basket) session.getAttribute("basket");
-        return basket != null ? basket.getProducts() : new ArrayList<>();
+    public ResponseEntity<List<String>> getProducts(HttpSession session)  {
+        BasketServiceImpl basket = (BasketServiceImpl) session.getAttribute("basket");
+        if (basket == null) {
+            basket = new BasketServiceImpl();
+            session.getAttribute("basket");
+        }
+        return ResponseEntity.ok(basket.getProducts());
     }
 }
