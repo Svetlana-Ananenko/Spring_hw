@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Scope("prototype")
+@SessionScope
 
 public class BasketServiceImpl implements BasketService {
     public List<String> productsList = new ArrayList<>(List.of());
