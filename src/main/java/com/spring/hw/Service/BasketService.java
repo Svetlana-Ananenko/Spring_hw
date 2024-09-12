@@ -1,9 +1,10 @@
 package com.spring.hw.Service;
 
-import java.util.List;
+import org.springframework.web.context.annotation.SessionScope;
 
 public interface BasketService {
-   String addProducts(String products);
-
-    List<String> getProducts();
+    @SessionScope
+    String addProducts(String products);
+    @SessionScope
+    String getProducts();
 }

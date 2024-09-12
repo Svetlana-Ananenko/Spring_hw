@@ -2,7 +2,9 @@ package com.spring.hw.Service;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +13,18 @@ import java.util.List;
 
 public class BasketServiceImpl implements BasketService {
     public List<String> productsList = new ArrayList<>(List.of());
+    private Files session;
 
-@Override
+    @Override
+@SessionScope
     public String addProducts(String products) {
     return String.valueOf(productsList.add(products));
 
     }
     @Override
-    public List<String> getProducts() {
-        return productsList;
+    @SessionScope
+    public String getProducts() {
+        return productsList.toString();
     }
 
 }
