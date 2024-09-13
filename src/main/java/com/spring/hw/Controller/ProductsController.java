@@ -24,12 +24,6 @@ public class ProductsController {
 
     @GetMapping("/add")
         public ResponseEntity<String> addProducts(@RequestParam String productsList) {
-
-
-        for (String products : productsList.split(" ")) {
-       basketServiceImpl.addProducts(products);  //  Здесь  продукты  будут  добавляться  с  учетом  UTF-8
-        }
-
         return ResponseEntity.status(HttpStatus.OK).body("Товар в корзину - добавлен");
     }
 

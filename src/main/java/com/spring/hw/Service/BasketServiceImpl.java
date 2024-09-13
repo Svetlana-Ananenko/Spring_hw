@@ -9,21 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@SessionScope
+
 
 public class BasketServiceImpl implements BasketService {
     public List<String> productsList = new ArrayList<>(List.of());
     private Files session;
 
     @Override
-@SessionScope
+
     public String addProducts(String products) {
-    return String.valueOf(productsList.add(products));
+        for (String product : productsList) {
+            productsList.add(products);
+        }
+        return String.valueOf(productsList.add(products));
 
     }
     @Override
-    @SessionScope
+
     public String getProducts() {
+        productsList.toString();
         return productsList.toString();
     }
 
