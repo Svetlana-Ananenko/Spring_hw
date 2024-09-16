@@ -1,6 +1,7 @@
 package com.spring.hw.Controller;
 
 import com.spring.hw.Service.Basket;
+import com.spring.hw.Service.BasketService;
 import com.spring.hw.Service.BasketServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -15,21 +16,22 @@ import java.util.List;
 @RequestMapping("/store/order")
 public class ProductsController {
 
-    private BasketServiceImpl basketServiceImpl;
+    private final BasketService basketService;
 
 
-    public ProductsController(BasketServiceImpl basketServiceImpl) {
-        this.basketServiceImpl = basketServiceImpl;
+    public ProductsController(BasketService basketService) {
+        this.basketService = basketService;
     }
 
     @GetMapping("/add")
-        public ResponseEntity<String> addProducts(@RequestParam String productsList) {
-        return ResponseEntity.status(HttpStatus.OK).body("Товар в корзину - добавлен");
+        public String addProducts(@RequestParam("products") ArrayList<String> products) {
+        basketService.addProducts(products);
+        return "Товар "+ products  +" добавлен в корзину";
     }
 
 
     @GetMapping("/get")
-    public ResponseEntity<List<String>> getProducts()  {
-        return ResponseEntity.ok(Collections.singletonList(basketServiceImpl.getProducts()));
+    public List<String> getProducts()  {
+        return  basketService.getProducts();
     }
 }
